@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NUVA — Cuidado natural para tus labios</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Helvetica Neue', Arial, sans-serif; color:#0a1f3d; background:#fff; line-height:1.6; }
@@ -16,7 +17,6 @@
   /* HERO */
   .hero { background:#0a1f3d; color:#fff; padding:80px 20px; text-align:center; }
   .hero img.logo { width:220px; margin:0 auto 30px; }
-  .hero h1 { font-size:2.6rem; font-weight:300; letter-spacing:3px; margin-bottom:12px; }
   .hero p { font-weight:300; opacity:0.85; margin-bottom:35px; font-size:1.05rem; }
   .btn { display:inline-block; background:#fff; color:#0a1f3d; padding:14px 36px; border:none; font-size:1rem; letter-spacing:1px; cursor:pointer; text-decoration:none; transition:0.3s; }
   .btn:hover { background:#e8e8e8; }
@@ -37,7 +37,7 @@
   .ingredient { width:150px; }
   .ingredient .icon { font-size:1.8rem; }
 
-  /* GALERIA - editorial, imágenes/videos completos con texto al lado */
+  /* GALERIA editorial */
   .gallery-row { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; text-align:left; margin-bottom:70px; }
   .gallery-row:last-child { margin-bottom:0; }
   .gallery-row.reverse .media { order:2; }
@@ -62,6 +62,23 @@
 
   /* FOOTER */
   footer { background:#0a1f3d; color:#fff; text-align:center; padding:30px 20px; font-size:0.85rem; opacity:0.8; }
+
+  /* MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(10,31,61,0.6); z-index:999; align-items:center; justify-content:center; padding:20px; }
+  .modal-overlay.active { display:flex; }
+  .modal-box { background:#fff; max-width:420px; width:100%; border-radius:10px; padding:40px 30px; position:relative; text-align:center; }
+  .modal-close { position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.3rem; cursor:pointer; color:#0a1f3d; }
+  .modal-box h3 { font-weight:400; font-size:1.4rem; margin-bottom:10px; }
+  .modal-note { font-size:0.85rem; opacity:0.7; margin-bottom:22px; }
+  .modal-box input { width:100%; padding:12px 14px; margin-bottom:14px; border:1px solid #ddd; border-radius:6px; font-size:0.95rem; font-family:inherit; }
+  .modal-box .btn-dark { width:100%; padding:14px; margin-top:6px; }
+  .modal-error { color:#b00020; font-size:0.85rem; margin-bottom:10px; display:none; }
+  .modal-loading { display:none; font-size:0.9rem; opacity:0.7; margin-top:14px; }
+
+  .confirmation { display:none; }
+  .confirmation.active { display:block; }
+  .confirmation .order-num { font-size:1.6rem; font-weight:600; margin:14px 0; }
+  .confirmation p { font-size:0.92rem; opacity:0.85; margin-bottom:8px; }
 
   @media (max-width:768px){
     .benefits, .product-grid, .founder-grid, .purchase-images, .gallery-row { grid-template-columns:1fr; }
@@ -204,15 +221,92 @@
     <p>Este sitio web y el proceso de compra corresponden a una simulación desarrollada exclusivamente con fines académicos.</p>
   </footer>
 
+  <!-- MODAL DE COMPRA -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <button class="modal-close" id="closeModal">✕</button>
+
+      <div id="formView">
+        <h3>Finalizar pedido</h3>
+        <p class="modal-note">Esta compra corresponde a una simulación académica. No se realizará ningún cobro.</p>
+        <p class="modal-error" id="formError">Por favor completa nombre y correo.</p>
+        <form id="orderForm">
+          <input type="text" id="nombre" placeholder="Nombre completo" required>
+          <input type="email" id="correo" placeholder="Correo electrónico" required>
+          <button type="submit" class="btn btn-dark">Confirmar pedido</button>
+        </form>
+        <p class="modal-loading" id="loadingMsg">Procesando tu pedido...</p>
+      </div>
+
+      <div id="confirmView" class="confirmation">
+        <h3>Gracias por confiar en NUVA</h3>
+        <p class="order-num">Pedido #0001</p>
+        <p>Tu pedido está siendo preparado.</p>
+        <p>Fecha estimada de entrega: 3-5 días hábiles.</p>
+        <p style="margin-top:18px; font-size:0.8rem; opacity:0.6;">Este pedido hace parte de una simulación académica desarrollada para la asignatura de Producción Agrícola.</p>
+        <button class="btn btn-dark" id="closeConfirm" style="margin-top:20px;">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    emailjs.init({ publicKey: "nYABydzS5dm5gWCXk" });
+
     const faders = document.querySelectorAll('.fade');
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
     }, { threshold: 0.2 });
     faders.forEach(f => observer.observe(f));
 
-    document.getElementById('openModal').addEventListener('click', () => {
-      alert('Aquí se abrirá el proceso de compra (próxima fase)');
+    const overlay = document.getElementById('modalOverlay');
+    const formView = document.getElementById('formView');
+    const confirmView = document.getElementById('confirmView');
+    const orderForm = document.getElementById('orderForm');
+    const formError = document.getElementById('formError');
+    const loadingMsg = document.getElementById('loadingMsg');
+
+    function openModal() {
+      overlay.classList.add('active');
+      formView.style.display = 'block';
+      confirmView.classList.remove('active');
+      orderForm.reset();
+      formError.style.display = 'none';
+      loadingMsg.style.display = 'none';
+    }
+    function closeModal() {
+      overlay.classList.remove('active');
+    }
+
+    document.getElementById('openModal').addEventListener('click', openModal);
+    document.getElementById('closeModal').addEventListener('click', closeModal);
+    document.getElementById('closeConfirm').addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+
+    orderForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const nombre = document.getElementById('nombre').value.trim();
+      const correo = document.getElementById('correo').value.trim();
+
+      if (!nombre || !correo) {
+        formError.style.display = 'block';
+        return;
+      }
+      formError.style.display = 'none';
+      loadingMsg.style.display = 'block';
+
+      emailjs.send('service_ea1s6qm', 'template_e95h9ic', {
+        nombre: nombre,
+        correo: correo
+      }).then(function() {
+        loadingMsg.style.display = 'none';
+        formView.style.display = 'none';
+        confirmView.classList.add('active');
+      }, function(error) {
+        loadingMsg.style.display = 'none';
+        formError.textContent = 'Hubo un problema enviando el correo. Intenta de nuevo.';
+        formError.style.display = 'block';
+        console.error(error);
+      });
     });
   </script>
 
