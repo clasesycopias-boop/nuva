@@ -49,7 +49,7 @@
   /* COMPRA */
   .purchase { background:#f7f8fa; }
   .purchase-images { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:30px; }
-  .purchase-images img { border-radius:6px; height:160px; object-fit:cover; width:100%; }
+  .purchase-images img { border-radius:6px; height:160px; object-fit:cover; width:100%; cursor:zoom-in; }
   .price { margin:20px 0; }
   .price .old { text-decoration:line-through; opacity:0.5; margin-right:10px; }
   .price .free { color:#0a1f3d; font-weight:600; font-size:1.2rem; }
@@ -63,7 +63,7 @@
   /* FOOTER */
   footer { background:#0a1f3d; color:#fff; text-align:center; padding:30px 20px; font-size:0.85rem; opacity:0.8; }
 
-  /* MODAL */
+  /* MODAL DE COMPRA */
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(10,31,61,0.6); z-index:999; align-items:center; justify-content:center; padding:20px; }
   .modal-overlay.active { display:flex; }
   .modal-box { background:#fff; max-width:420px; width:100%; border-radius:10px; padding:40px 30px; position:relative; text-align:center; }
@@ -79,6 +79,15 @@
   .confirmation.active { display:block; }
   .confirmation .order-num { font-size:1.6rem; font-weight:600; margin:14px 0; }
   .confirmation p { font-size:0.92rem; opacity:0.85; margin-bottom:8px; }
+
+  /* LIGHTBOX */
+  .lightbox { display:none; position:fixed; inset:0; background:rgba(10,31,61,0.92); z-index:1000; align-items:center; justify-content:center; padding:20px; }
+  .lightbox.active { display:flex; }
+  .lightbox img { max-width:90vw; max-height:80vh; width:auto; height:auto; object-fit:contain; border-radius:6px; }
+  .lightbox-close { position:absolute; top:20px; right:30px; background:none; border:none; color:#fff; font-size:2rem; cursor:pointer; }
+  .lightbox-arrow { position:absolute; top:50%; transform:translateY(-50%); background:none; border:none; color:#fff; font-size:2.5rem; cursor:pointer; padding:10px; }
+  .lightbox-prev { left:10px; }
+  .lightbox-next { right:10px; }
 
   @media (max-width:768px){
     .benefits, .product-grid, .founder-grid, .purchase-images, .gallery-row { grid-template-columns:1fr; }
@@ -189,10 +198,10 @@
   <section id="compra" class="section fade purchase">
     <h2>NUVA Natural Lip Balm — Original</h2>
     <div class="purchase-images">
-      <img src="nuva-comercial-3.png" alt="NUVA comercial">
-      <img src="nuva-espejo.png" alt="NUVA espejo">
-      <img src="nuva-propiedades.png" alt="Propiedades NUVA">
-      <img src="nuva-caja-1.png" alt="Caja NUVA">
+      <img src="nuva-comercial-3.png" alt="NUVA comercial" onclick="openLightbox(0)">
+      <img src="nuva-espejo.png" alt="NUVA espejo" onclick="openLightbox(1)">
+      <img src="nuva-propiedades.png" alt="Propiedades NUVA" onclick="openLightbox(2)">
+      <img src="nuva-caja-1.png" alt="Caja NUVA" onclick="openLightbox(3)">
     </div>
     <div class="price">
       <span class="old">$19.900 COP</span>
@@ -220,6 +229,14 @@
   <footer>
     <p>Este sitio web y el proceso de compra corresponden a una simulación desarrollada exclusivamente con fines académicos.</p>
   </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">✕</button>
+    <button class="lightbox-arrow lightbox-prev" id="lightboxPrev">‹</button>
+    <img id="lightboxImg" src="" alt="">
+    <button class="lightbox-arrow lightbox-next" id="lightboxNext">›</button>
+  </div>
 
   <!-- MODAL DE COMPRA -->
   <div class="modal-overlay" id="modalOverlay">
@@ -258,6 +275,28 @@
     }, { threshold: 0.2 });
     faders.forEach(f => observer.observe(f));
 
+    /* LIGHTBOX */
+    const lightboxImages = ["nuva-comercial-3.png", "nuva-espejo.png", "nuva-propiedades.png", "nuva-caja-1.png"];
+    let currentImg = 0;
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    function openLightbox(index) {
+      currentImg = index;
+      lightboxImg.src = lightboxImages[currentImg];
+      lightbox.classList.add('active');
+    }
+    function closeLightbox() { lightbox.classList.remove('active'); }
+    function showImg(dir) {
+      currentImg = (currentImg + dir + lightboxImages.length) % lightboxImages.length;
+      lightboxImg.src = lightboxImages[currentImg];
+    }
+    document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+    document.getElementById('lightboxPrev').addEventListener('click', () => showImg(-1));
+    document.getElementById('lightboxNext').addEventListener('click', () => showImg(1));
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+    /* MODAL DE COMPRA */
     const overlay = document.getElementById('modalOverlay');
     const formView = document.getElementById('formView');
     const confirmView = document.getElementById('confirmView');
