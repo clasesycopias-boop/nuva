@@ -37,11 +37,14 @@
   .ingredient { width:150px; }
   .ingredient .icon { font-size:1.8rem; }
 
-  /* GALERIA - grande e interactiva */
-  .gallery-stack { display:flex; flex-direction:column; gap:24px; margin-top:10px; }
-  .gallery-item { position:relative; overflow:hidden; border-radius:10px; box-shadow:0 8px 30px rgba(10,31,61,0.15); }
-  .gallery-item img, .gallery-item video { width:100%; height:520px; object-fit:cover; transition:transform 0.6s ease; }
-  .gallery-item:hover img, .gallery-item:hover video { transform:scale(1.04); }
+  /* GALERIA - editorial, imágenes/videos completos con texto al lado */
+  .gallery-row { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; text-align:left; margin-bottom:70px; }
+  .gallery-row:last-child { margin-bottom:0; }
+  .gallery-row.reverse .media { order:2; }
+  .gallery-row.reverse .text { order:1; }
+  .gallery-row .media img, .gallery-row .media video { border-radius:8px; width:100%; height:auto; box-shadow:0 8px 30px rgba(10,31,61,0.12); }
+  .gallery-row .text h3 { font-weight:400; font-size:1.3rem; margin-bottom:12px; }
+  .gallery-row .text p { font-size:0.97rem; opacity:0.85; }
 
   /* COMPRA */
   .purchase { background:#f7f8fa; }
@@ -61,9 +64,11 @@
   footer { background:#0a1f3d; color:#fff; text-align:center; padding:30px 20px; font-size:0.85rem; opacity:0.8; }
 
   @media (max-width:768px){
-    .benefits, .product-grid, .founder-grid, .purchase-images { grid-template-columns:1fr; }
+    .benefits, .product-grid, .founder-grid, .purchase-images, .gallery-row { grid-template-columns:1fr; }
     .founder-grid img { margin:0 auto; max-width:250px; }
-    .gallery-item img, .gallery-item video { height:340px; }
+    .gallery-row.reverse .media, .gallery-row.reverse .text { order:0; }
+    .gallery-row { text-align:center; margin-bottom:50px; }
+    .gallery-row .text { text-align:center; }
   }
 </style>
 </head>
@@ -113,14 +118,55 @@
   <!-- GALERIA -->
   <section class="section fade">
     <h2>NUVA en detalle</h2>
-    <div class="gallery-stack">
-      <div class="gallery-item"><img src="nuva-modelo-1.png" alt="Modelo usando NUVA"></div>
-      <div class="gallery-item"><video src="nuva-nacimiento.mp4" muted loop autoplay playsinline></video></div>
-      <div class="gallery-item"><img src="nuva-color-beige.png" alt="NUVA color beige"></div>
-      <div class="gallery-item"><video src="nuva-modelo.mp4" muted loop autoplay playsinline></video></div>
-      <div class="gallery-item"><img src="nuva-propiedades.png" alt="Propiedades NUVA"></div>
-      <div class="gallery-item"><video src="nuva-comercial.mp4" muted loop autoplay playsinline></video></div>
+
+    <div class="gallery-row">
+      <div class="media"><img src="nuva-modelo-1.png" alt="Modelo usando NUVA"></div>
+      <div class="text">
+        <h3>Un gesto simple, todos los días</h3>
+        <p>NUVA se integra en tu rutina sin esfuerzo. Un toque suave, una textura ligera, y labios cuidados desde el primer uso.</p>
+      </div>
     </div>
+
+    <div class="gallery-row reverse">
+      <div class="media"><video src="nuva-nacimiento.mp4" muted loop autoplay playsinline controls></video></div>
+      <div class="text">
+        <h3>Así nace NUVA</h3>
+        <p>Cada unidad se formula con cuidado, combinando ingredientes naturales seleccionados uno por uno para lograr una fórmula simple y efectiva.</p>
+      </div>
+    </div>
+
+    <div class="gallery-row">
+      <div class="media"><img src="nuva-color-beige.png" alt="NUVA color beige"></div>
+      <div class="text">
+        <h3>Un tono, una sensación</h3>
+        <p>Un acabado suave y natural, pensado para realzar tus labios sin sobrecargarlos.</p>
+      </div>
+    </div>
+
+    <div class="gallery-row reverse">
+      <div class="media"><video src="nuva-modelo.mp4" muted loop autoplay playsinline controls></video></div>
+      <div class="text">
+        <h3>Hecho para tu día a día</h3>
+        <p>Fácil de aplicar, fácil de llevar contigo. NUVA está pensado para acompañarte en cualquier momento.</p>
+      </div>
+    </div>
+
+    <div class="gallery-row">
+      <div class="media"><img src="nuva-propiedades.png" alt="Propiedades NUVA"></div>
+      <div class="text">
+        <h3>Ingredientes que se notan</h3>
+        <p>Cera de abejas, aceite de coco virgen y vitamina E trabajan juntos para nutrir e hidratar en profundidad.</p>
+      </div>
+    </div>
+
+    <div class="gallery-row reverse">
+      <div class="media"><video src="nuva-comercial.mp4" muted loop autoplay playsinline controls></video></div>
+      <div class="text">
+        <h3>NUVA, en su esencia</h3>
+        <p>Minimalismo, calidad y una experiencia pensada al detalle — así es NUVA.</p>
+      </div>
+    </div>
+
   </section>
 
   <!-- COMPRA -->
