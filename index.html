@@ -1,24 +1,162 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NUVA — Cuidado natural para tus labios</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Helvetica Neue', Arial, sans-serif;
-      background: #ffffff;
-      color: #0a1f3d;
-    }
-    h1 { text-align: center; padding: 100px 20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NUVA — Cuidado natural para tus labios</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Helvetica Neue', Arial, sans-serif; color:#0a1f3d; background:#fff; line-height:1.6; }
+  img, video { max-width:100%; display:block; }
+  .section { padding:80px 20px; max-width:1100px; margin:0 auto; text-align:center; }
+  .fade { opacity:0; transform:translateY(20px); transition:all 0.8s ease; }
+  .fade.show { opacity:1; transform:translateY(0); }
+
+  /* HERO */
+  .hero { background:#0a1f3d; color:#fff; padding:60px 20px; text-align:center; }
+  .hero img.logo { width:120px; margin:0 auto 20px; }
+  .hero h1 { font-size:2.5rem; font-weight:300; letter-spacing:2px; margin-bottom:10px; }
+  .hero p { font-weight:300; opacity:0.85; margin-bottom:30px; }
+  .hero img.product { width:260px; margin:30px auto; }
+  .btn { display:inline-block; background:#fff; color:#0a1f3d; padding:14px 36px; border:none; font-size:1rem; letter-spacing:1px; cursor:pointer; text-decoration:none; transition:0.3s; }
+  .btn:hover { background:#e8e8e8; }
+  .btn-dark { background:#0a1f3d; color:#fff; }
+  .btn-dark:hover { background:#132a52; }
+
+  /* BENEFICIOS */
+  .benefits { display:grid; grid-template-columns:repeat(4,1fr); gap:30px; margin-top:40px; }
+  .benefit-card { padding:20px; }
+  .benefit-card .icon { font-size:2rem; margin-bottom:10px; }
+
+  /* PRODUCTO */
+  .product-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; text-align:left; margin-top:30px; }
+  .product-grid img { border-radius:4px; }
+
+  /* INGREDIENTES */
+  .ingredients { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; margin-top:30px; }
+  .ingredient { width:150px; }
+  .ingredient .icon { font-size:1.8rem; }
+
+  /* COMPRA */
+  .purchase { background:#f7f8fa; }
+  .purchase-images { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:30px; }
+  .price { margin:20px 0; }
+  .price .old { text-decoration:line-through; opacity:0.5; margin-right:10px; }
+  .price .free { color:#0a1f3d; font-weight:600; font-size:1.3rem; }
+
+  /* HISTORIA */
+  .historia video { border-radius:4px; margin-top:20px; max-width:500px; margin-left:auto; margin-right:auto; }
+
+  /* FUNDADORA */
+  .founder-grid { display:grid; grid-template-columns:1fr 1.3fr; gap:40px; align-items:center; text-align:left; }
+  .founder-grid img { border-radius:4px; }
+
+  /* FOOTER */
+  footer { background:#0a1f3d; color:#fff; text-align:center; padding:30px 20px; font-size:0.85rem; opacity:0.8; }
+
+  @media (max-width:768px){
+    .benefits, .product-grid, .founder-grid, .purchase-images { grid-template-columns:1fr; }
+    .founder-grid img { margin:0 auto; max-width:250px; }
+  }
+</style>
 </head>
 <body>
-  <h1>NUVA — próximamente</h1>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img class="logo" src="nuva-logo.png" alt="Logo NUVA">
+    <h1>NUVA</h1>
+    <p>Cuidado natural para tus labios</p>
+    <img class="product" src="nuva-etiqueta-frontal.jpg" alt="Bálsamo labial NUVA">
+    <a href="#compra" class="btn">Comprar ahora</a>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section class="section fade">
+    <h2>Beneficios</h2>
+    <div class="benefits">
+      <div class="benefit-card"><div class="icon">💧</div><p>Hidrata</p></div>
+      <div class="benefit-card"><div class="icon">🛡️</div><p>Protege</p></div>
+      <div class="benefit-card"><div class="icon">🌿</div><p>Suaviza</p></div>
+      <div class="benefit-card"><div class="icon">✨</div><p>Contiene Vitamina E</p></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTO -->
+  <section class="section fade">
+    <div class="product-grid">
+      <img src="nuva-color-rosa.jpg" alt="NUVA en uso">
+      <div>
+        <h2>Nuestro Producto</h2>
+        <p>Un bálsamo labial natural, formulado con ingredientes cuidadosamente seleccionados para nutrir tus labios todos los días. Textura suave, absorción rápida, resultado real.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- INGREDIENTES -->
+  <section class="section fade">
+    <h2>Ingredientes</h2>
+    <div class="ingredients">
+      <div class="ingredient"><div class="icon">🐝</div><p>Cera de abejas</p></div>
+      <div class="ingredient"><div class="icon">🥥</div><p>Aceite de coco virgen</p></div>
+      <div class="ingredient"><div class="icon">💛</div><p>Vitamina E</p></div>
+      <div class="ingredient"><div class="icon">🌸</div><p>Colorante para cosméticos</p></div>
+    </div>
+  </section>
+
+  <!-- NUESTRA HISTORIA -->
+  <section class="section fade historia">
+    <h2>Nuestra Historia</h2>
+    <p>NUVA nació como un proyecto con la visión de demostrar que la cosmética natural puede combinar ingredientes cuidadosamente seleccionados con una experiencia de compra moderna y profesional.</p>
+    <video src="nuva-nacimiento.mp4" controls></video>
+  </section>
+
+  <!-- COMPRA -->
+  <section id="compra" class="section fade purchase">
+    <h2>NUVA Natural Lip Balm — Original</h2>
+    <div class="purchase-images">
+      <img src="nuva-caja-1.jpg" alt="Caja NUVA">
+      <img src="nuva-color-beige.jpg" alt="NUVA beige">
+      <img src="nuva-espejo.jpg" alt="NUVA espejo">
+      <img src="nuva-etiqueta-trasera.jpg" alt="Etiqueta trasera">
+    </div>
+    <div class="price">
+      <span class="old">$19.900 COP</span>
+      <span class="free">Primera unidad GRATIS (Proyecto académico)</span>
+    </div>
+    <button class="btn btn-dark" id="openModal">Comprar ahora</button>
+  </section>
+
+  <!-- DETRÁS DE NUVA -->
+  <section class="section fade">
+    <h2>Detrás de NUVA</h2>
+    <div class="founder-grid">
+      <img src="nuva-fundadora.jpg" alt="Fundadora de NUVA">
+      <div>
+        <p><strong>Citlally Andrea Campo Castro</strong><br>Fundadora de NUVA</p>
+        <p>Estudiante de Ingeniería Agroindustrial en la Universidad del Atlántico, con experiencia en desarrollo de software, diseño UX/UI y procesos logísticos. NUVA integra formulación de producto natural, identidad de marca y experiencia digital en un solo proyecto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Este sitio web y el proceso de compra corresponden a una simulación desarrollada exclusivamente con fines académicos.</p>
+  </footer>
 
   <script>
-    console.log("NUVA cargado correctamente");
+    // Animación fade-in al hacer scroll
+    const faders = document.querySelectorAll('.fade');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+    }, { threshold: 0.2 });
+    faders.forEach(f => observer.observe(f));
+
+    // Placeholder: aquí conectamos el modal de compra en la próxima fase
+    document.getElementById('openModal').addEventListener('click', () => {
+      alert('Aquí se abrirá el proceso de compra (próxima fase)');
+    });
   </script>
+
 </body>
 </html>
